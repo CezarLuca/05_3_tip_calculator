@@ -5,10 +5,17 @@ export default function App() {
 
     const handleInputChange = (event) => {
         setBill(event.target.value);
-        console.log(bill);
+        // console.log(bill);
     };
 
     const tipPercentages = [0, 5, 10, 15, 20];
+    const tipSatisfaction = [
+        "Dissatisfied",
+        "Satisfied",
+        "Very satisfied",
+        "Delighted",
+        "Over the moon!",
+    ];
     // const [selectedTip, setSelectedTip] = useState(tipPercentages[0]);
 
     // const handleSelectChange = (event) => {
@@ -39,14 +46,22 @@ export default function App() {
             <Bill bill={bill} onInputChange={handleInputChange} />
             <Satisfaction
                 tipPercentages={tipPercentages}
+                tipSatisfaction={tipSatisfaction}
                 selectedTip={selectedTip1}
                 onSelectChange={handleSelectChange1}
-            />
+            >
+                {" "}
+                How did you like the food and service?{" "}
+            </Satisfaction>
             <Satisfaction
                 tipPercentages={tipPercentages}
+                tipSatisfaction={tipSatisfaction}
                 selectedTip={selectedTip2}
                 onSelectChange={handleSelectChange2}
-            />
+            >
+                {" "}
+                How did your friend liked the food and service?{" "}
+            </Satisfaction>
             <PayCheck
                 bill={bill}
                 selectedTip1={selectedTip1}
@@ -72,14 +87,20 @@ function Bill({ bill, onInputChange }) {
     );
 }
 
-function Satisfaction({ tipPercentages, selectedTip, onSelectChange }) {
+function Satisfaction({
+    tipPercentages,
+    tipSatisfaction,
+    selectedTip,
+    onSelectChange,
+    children,
+}) {
     return (
         <div>
-            <label>Satisfaction</label>
+            <label>{children}</label>
             <select value={selectedTip} onChange={onSelectChange}>
                 {tipPercentages.map((percentage, index) => (
                     <option key={index} value={percentage}>
-                        {percentage}%
+                        {tipSatisfaction[index]}: {percentage}%
                     </option>
                 ))}
             </select>
