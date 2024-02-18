@@ -27,18 +27,24 @@ export default function App() {
         setSelectedTip2(event.target.value);
     };
 
+    const handleReset = () => {
+        setBill("");
+        setSelectedTip1(tipPercentages[0]);
+        setSelectedTip2(tipPercentages[0]);
+    };
+
     return (
         <div>
             <h1>Tip Calculator</h1>
             <Bill bill={bill} onInputChange={handleInputChange} />
             <Satisfaction
                 tipPercentages={tipPercentages}
-                tip={selectedTip1}
+                selectedTip={selectedTip1}
                 onSelectChange={handleSelectChange1}
             />
             <Satisfaction
                 tipPercentages={tipPercentages}
-                tip={selectedTip2}
+                selectedTip={selectedTip2}
                 onSelectChange={handleSelectChange2}
             />
             <PayCheck
@@ -46,6 +52,7 @@ export default function App() {
                 selectedTip1={selectedTip1}
                 selectedTip2={selectedTip2}
             />
+            <Reset onReset={handleReset} />
         </div>
     );
 }
@@ -88,6 +95,14 @@ function PayCheck({ bill, selectedTip1, selectedTip2 }) {
     return (
         <div>
             <p>{`You have to pay ${totalAmount}€ (${bill}€ + ${tipValue}€ tip)`}</p>
+        </div>
+    );
+}
+
+function Reset({ onReset }) {
+    return (
+        <div>
+            <button onClick={onReset}>Reset</button>
         </div>
     );
 }
