@@ -23,8 +23,8 @@ export default function App() {
     //     console.log(selectedTip);
     // };
 
-    const [selectedTip1, setSelectedTip1] = useState(tipPercentages[0]);
-    const [selectedTip2, setSelectedTip2] = useState(tipPercentages[0]);
+    const [selectedTip1, setSelectedTip1] = useState(tipPercentages[1]);
+    const [selectedTip2, setSelectedTip2] = useState(tipPercentages[1]);
 
     const handleSelectChange1 = (event) => {
         setSelectedTip1(event.target.value);
@@ -36,8 +36,8 @@ export default function App() {
 
     const handleReset = () => {
         setBill("");
-        setSelectedTip1(tipPercentages[0]);
-        setSelectedTip2(tipPercentages[0]);
+        setSelectedTip1(tipPercentages[1]);
+        setSelectedTip2(tipPercentages[1]);
     };
 
     return (
@@ -62,12 +62,16 @@ export default function App() {
                 {" "}
                 How did your friend liked the food and service?{" "}
             </Satisfaction>
-            <PayCheck
-                bill={bill}
-                selectedTip1={selectedTip1}
-                selectedTip2={selectedTip2}
-            />
-            <Reset onReset={handleReset} />
+            {bill && (
+                <>
+                    <PayCheck
+                        bill={bill}
+                        selectedTip1={selectedTip1}
+                        selectedTip2={selectedTip2}
+                    />
+                    <Reset onReset={handleReset} />
+                </>
+            )}
         </div>
     );
 }
@@ -112,10 +116,14 @@ function PayCheck({ bill, selectedTip1, selectedTip2 }) {
     const tipValue =
         (Number(bill) * ((Number(selectedTip1) + Number(selectedTip2)) / 2)) /
         100;
-    const totalAmount = Number(bill) + Number(tipValue);
+    const tipValueInteger = Math.floor(tipValue);
+    const tipValueReminder = Math.floor((tipValue % 1) * 100);
+    const totalAmountInt = Number(bill) + Number(tipValueInteger);
     return (
         <div>
-            <p>{`You have to pay ${totalAmount}€ (${bill}€ + ${tipValue}€ tip)`}</p>
+            <p>{`You have to pay ${totalAmountInt}€${
+                tipValueReminder ? ` ${tipValueReminder}¢` : ""
+            } (${bill}€ + ${tipValue}€ tip)`}</p>
         </div>
     );
 }
